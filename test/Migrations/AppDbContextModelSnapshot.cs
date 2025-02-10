@@ -22,6 +22,51 @@ namespace test.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("test.Model.Flat", b =>
+                {
+                    b.Property<int>("FlatCodeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FlatCodeId"));
+
+                    b.Property<string>("FlatAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FlatBathrooms")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FlatBedrooms")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FlatCity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FlatDetails")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FlatGovernorate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FlatPrice")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FloorNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FlatCodeId");
+
+                    b.ToTable("Flat");
+                });
+
             modelBuilder.Entity("test.Model.Register", b =>
                 {
                     b.Property<int>("UserId")

@@ -10,5 +10,6 @@ namespace test.Configuration
 
         }
         public DbSet<Register>? Register { get; set; }
+        public DbSet<Flat>? Flat { get; set; }
     }
 }
