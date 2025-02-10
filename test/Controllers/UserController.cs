@@ -10,11 +10,11 @@ namespace test.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RegisterController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IRegisterRepo _repo;
 
-        public RegisterController(IRegisterRepo repo)
+        public UserController(IRegisterRepo repo)
         {
             _repo = repo;
         }
@@ -42,7 +42,7 @@ namespace test.Controllers
             }
         }
         [HttpPost("SignUp")]
-        public IActionResult SignUp(RegisterDto registerDto)
+        public IActionResult SignUp(UserDto registerDto)
         {
             if (!ModelState.IsValid)
             { return BadRequest(ModelState); }

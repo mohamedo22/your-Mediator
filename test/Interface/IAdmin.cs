@@ -4,9 +4,8 @@ namespace test.Interface
 {
     public interface IAdmin
     {
-        public bool addAdmin(AdminDTO adminDTO);
-        public bool removeAdmin(int adminID);
-        public bool editAdmin (AdminDTO adminDTO,int adminID);
-        public List<AdminDTO> getAdmins();
+        public bool ForgetPassword(ForgetDto forgetDto);
+        public bool SignUp(AdminDTO adminDTO);
+        public bool Login(AdminDTO adminDTO);
     }
 }

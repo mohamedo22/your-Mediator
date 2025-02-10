@@ -1,6 +1,8 @@
-﻿using test.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using test.Configuration;
 using test.Dto;
 using test.Interface;
+using test.Model;
 
 namespace test.Repos
 {
@@ -12,25 +14,72 @@ namespace test.Repos
         {
             this.appDbContext = appDbContext;
         }
-
-        public bool addAdmin(AdminDTO adminDTO)
+        public bool ForgetPassword(ForgetDto forgetDto)
         {
-            throw new NotImplementedException();
+            if (appDbContext.User != null)
+            {
+                var status = false;
+                var user = appDbContext.User.FirstOrDefault(x => x.Email == forgetDto.Email);
+                if (user != null)
+                {
+                    user.Password = forgetDto.New_Password;
+                    appDbContext.User.Update(user);
+                    appDbContext.SaveChanges();
+                    status = true;
+                    return status;
+                }
+                else
+                {
+                    status = false;
+                    return status;
+                }
+            }
+            return false;
         }
 
-        public bool editAdmin(AdminDTO adminDTO, int adminID)
+        public bool Login(AdminDTO adminDTO)
         {
-            throw new NotImplementedException();
+            if (appDbContext.User != null)
+            {
+                var status = false;
+                var user = appDbContext.Admins.FirstOrDefault(x => x.AdminEmail == adminDTO.AdminEmail && x.AdminPassword == adminDTO.AdminPassword);
+                if (user != null)
+                {
+                    status = true;
+                    return status;
+                }
+                else
+                {
+                    status = false;
+                    return status;
+                }
+            }
+            return false;
         }
-
-        public List<AdminDTO> getAdmins()
+        public bool SignUp(AdminDTO adminDTO)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool removeAdmin(int adminID)
-        {
-            throw new NotImplementedException();
+            if (appDbContext.User != null)
+            {
+                bool status = false;
+                if (!string.IsNullOrWhiteSpace(adminDTO.AdminEmail) &&
+                    !string.IsNullOrWhiteSpace(adminDTO.AdminPassword))
+                {
+                    Admin register = new Admin
+                    {
+                        AdminEmail = adminDTO.AdminEmail,
+                        AdminPassword = adminDTO.AdminPassword
+                    };
+                    appDbContext.Admins.Add(register);
+                    appDbContext.SaveChanges();
+                    status = true;
+                    return status;
+                }
+                else
+                {
+                    return status;
+                }
+            }
+            return false;
         }
     }
 }

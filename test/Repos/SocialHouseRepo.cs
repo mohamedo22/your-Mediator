@@ -1,4 +1,5 @@
-﻿using test.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using test.Configuration;
 using test.Dto;
 using test.Interface;
 using test.Model;
@@ -26,16 +27,14 @@ namespace test.Repos
             };
             if (socialHouseDTO.socialHouseImages != null && socialHouseDTO.socialHouseImages.Count > 0)
             {
-                foreach (var imageDto in socialHouseDTO.socialHouseImages)
+                foreach (var imageFile in socialHouseDTO.socialHouseImages)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
-                        imageDto.image.CopyTo(memoryStream);
-                        var imageBytes = memoryStream.ToArray();
-
+                        imageFile.CopyTo(memoryStream);
                         socialHouse.socialHouseImages.Add(new SocialHouseImages
                         {
-                            image = imageBytes
+                            image = memoryStream.ToArray()
                         });
                     }
                 }
@@ -54,10 +53,14 @@ namespace test.Repos
 
         public bool editeSocialHouse(SocialHouseDTO socialHouseDTO, int socialHouseID)
         {
-            SocialHouse socialHouse = context.SocialHouses.FirstOrDefault(i=>i.SocialHouseId==socialHouseID);
+            SocialHouse socialHouse = context.SocialHouses.Include(im=>im.socialHouseImages).FirstOrDefault(i=>i.SocialHouseId==socialHouseID);
             if (socialHouse == null)
             {
                 return false;
+            }
+            if (socialHouse.socialHouseImages == null)
+            {
+                socialHouse.socialHouseImages = new List<SocialHouseImages>();
             }
             socialHouse.title = socialHouseDTO.title;
             socialHouse.description = socialHouseDTO.description;
@@ -66,17 +69,18 @@ namespace test.Repos
             socialHouse.terms = socialHouseDTO.terms;
             if (socialHouseDTO.socialHouseImages != null && socialHouseDTO.socialHouseImages.Count > 0)
             {
-                socialHouse.socialHouseImages.Clear();
-                foreach (var imageDto in socialHouseDTO.socialHouseImages)
+                if (socialHouse.socialHouseImages != null && socialHouse.socialHouseImages.Count > 0)
+                {
+                    context.SocialHouseImages.RemoveRange(socialHouse.socialHouseImages);
+                }
+                foreach (var imageFile in socialHouseDTO.socialHouseImages)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
-                        imageDto.image.CopyTo(memoryStream);
-                        var imageBytes = memoryStream.ToArray();
-
+                        imageFile.CopyTo(memoryStream);
                         socialHouse.socialHouseImages.Add(new SocialHouseImages
                         {
-                            image = imageBytes
+                            image = memoryStream.ToArray()
                         });
                     }
                 }
