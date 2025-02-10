@@ -10,5 +10,6 @@
         public string FlatCity { get; set; }
         public string FlatDetails { get; set; }
         public string FlatAddress { get; set; }
+        public List<FlatImagesGetDto> FlatImages { get; set; }
     }
 }

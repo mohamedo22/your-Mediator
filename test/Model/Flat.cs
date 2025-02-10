@@ -15,5 +15,6 @@ namespace test.Model
         public string FlatDetails { get; set; }
         public string  FlatAddress { get; set; }
         public string Status { get; set; } = "Waiting";
+        public List<FlatImages>  FlatImages { get; set; }
     }
 }

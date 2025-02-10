@@ -9,13 +9,10 @@ namespace test.Configuration
         {
 
         }
-<<<<<<< HEAD
-        public DbSet<User>? User { get; set; }
+        public DbSet<User> User { get; set; }
         public DbSet<SocialHouse> SocialHouses { get; set; }
         public DbSet<SocialHouseImages> SocialHouseImages { get; set; }
-=======
-        public DbSet<Register>? Register { get; set; }
-        public DbSet<Flat>? Flat { get; set; }
->>>>>>> 109d3edcfd41e74e4c5a283859539bcc0d1e192a
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Flat> Flat { get; set; }
     }
 }

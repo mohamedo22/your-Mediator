@@ -20,5 +20,6 @@ namespace test.Dto
         public string FlatGovernorate { get; set; }
         [Required, MaxLength(50)]
         public string FlatCity { get; set; }
+        public List<IFormFile> FlatImages { get; set; }
     }
 }

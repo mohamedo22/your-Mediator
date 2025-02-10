@@ -9,6 +9,6 @@ namespace test.Dto
         public string address { get; set; }
         public string category { get; set; }
         public string terms { get; set; }
-        public List<SocialHouseImagesDTO> socialHouseImages { get; set; }
+        public List<IFormFile> socialHouseImages { get; set; }
     }
 }
