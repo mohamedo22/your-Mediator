@@ -41,7 +41,6 @@ namespace test.Controllers
                 });
             }
         }
-
         [HttpPost("SignUp")]
         public IActionResult SignUp(RegisterDto registerDto)
         {

@@ -5,6 +5,7 @@ using test.Model;
 using test.Repos;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
+builder.Services.AddScoped<IFlatRepo, FlatRepo>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRegisterRepo,RegisterRepo>();
