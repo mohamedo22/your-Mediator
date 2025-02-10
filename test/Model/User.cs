@@ -2,7 +2,7 @@
 
 namespace test.Model
 {
-    public class Register
+    public class User
     {
         [Key]
         public int UserId { get; set; }

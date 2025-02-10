@@ -2,7 +2,7 @@
 
 namespace test.Dto
 {
-    public class RegisterDto
+    public class UserDto
     {
         [Required(ErrorMessage ="Can't be Empty")]
         public string Username { get; set; }

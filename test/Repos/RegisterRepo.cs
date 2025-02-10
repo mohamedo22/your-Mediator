@@ -22,13 +22,13 @@ namespace test.Repos
             var status = false;
             if (editProfileDto.Email != null)
             {
-                var user = _context.Register.FirstOrDefault(x => x.Email == x.Email);
+                var user = _context.User.FirstOrDefault(x => x.Email == x.Email);
                 if (user != null)
                 {
                     user.Phone = editProfileDto.Phone;
                     user.Username = editProfileDto.Username;
                     user.Address = editProfileDto.Address;
-                    _context.Register.Update(user);
+                    _context.User.Update(user);
                     _context.SaveChanges();
                     status = true;
                     return status;
@@ -43,14 +43,14 @@ namespace test.Repos
         }
         public bool ForgetPassword(ForgetDto forgetDto)
         {
-              if (_context.Register != null)
+              if (_context.User != null)
             {
                 var status = false;
-                var user = _context.Register.FirstOrDefault(x => x.Email == forgetDto.Email);
+                var user = _context.User.FirstOrDefault(x => x.Email == forgetDto.Email);
                 if (user != null)
                 {
                     user.Password = forgetDto.New_Password;
-                    _context.Register.Update(user);
+                    _context.User.Update(user);
                     _context.SaveChanges();
                     status = true;
                     return status;
@@ -66,10 +66,10 @@ namespace test.Repos
 
         public bool Login(LoginDto loginDto)
         {
-            if (_context.Register != null)
+            if (_context.User != null)
             {
                 var status = false;
-                var user = _context.Register.FirstOrDefault(x => x.Username == loginDto.Username && x.Password == loginDto.Password);
+                var user = _context.User.FirstOrDefault(x => x.Username == loginDto.Username && x.Password == loginDto.Password);
                 if (user != null)
                 {
                     status = true;
@@ -83,9 +83,9 @@ namespace test.Repos
             }
             return false;
         }
-        public bool SignUp(RegisterDto registerDto)
+        public bool SignUp(UserDto registerDto)
         {
-            if(_context.Register != null)
+            if(_context.User != null)
             {
                 bool status = false;
                 if (!string.IsNullOrWhiteSpace(registerDto.Username) &&
@@ -95,7 +95,7 @@ namespace test.Repos
                     !string.IsNullOrWhiteSpace(registerDto.Phone) &&
                     !string.IsNullOrWhiteSpace(registerDto.National_Id)) 
                 {
-                    Register register = new Register
+                    User register = new User
                     {
                         Email = registerDto.Email,
                         Username = registerDto.Username,
@@ -105,7 +105,7 @@ namespace test.Repos
                         Phone = registerDto.Phone,
                         National_Id = registerDto.National_Id
                     };
-                    _context.Register.Add(register);
+                    _context.User.Add(register);
                     _context.SaveChanges();
                     status = true;
                     return status;

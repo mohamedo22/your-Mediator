@@ -5,7 +5,7 @@ namespace test.Interface
     public interface IRegisterRepo
     {
         bool ForgetPassword(ForgetDto forgetDto);
-        bool SignUp(RegisterDto registerDto);
+        bool SignUp(UserDto registerDto);
         bool Login(LoginDto registerDto);
         bool EditProfile(EditProfileDto editProfileDto);
     }

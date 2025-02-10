@@ -9,6 +9,8 @@ namespace test.Configuration
         {
 
         }
-        public DbSet<Register>? Register { get; set; }
+        public DbSet<User>? User { get; set; }
+        public DbSet<SocialHouse> SocialHouses { get; set; }
+        public DbSet<SocialHouseImages> SocialHouseImages { get; set; }
     }
 }
