@@ -12,8 +12,8 @@ using test.Configuration;
 namespace test.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250210222821_firstMigration")]
-    partial class firstMigration
+    [Migration("20250213123042_init2")]
+    partial class init2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,6 +44,36 @@ namespace test.Migrations
                     b.HasKey("AdminId");
 
                     b.ToTable("Admins");
+                });
+
+            modelBuilder.Entity("test.Model.ContactUs", b =>
+                {
+                    b.Property<int>("RequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestId"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FlatCodeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Time")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RequestId");
+
+                    b.HasIndex("FlatCodeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ContactUs");
                 });
 
             modelBuilder.Entity("test.Model.Flat", b =>
@@ -89,6 +119,28 @@ namespace test.Migrations
                     b.HasKey("FlatCodeId");
 
                     b.ToTable("Flat");
+                });
+
+            modelBuilder.Entity("test.Model.FlatImages", b =>
+                {
+                    b.Property<int>("FlatImagesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FlatImagesId"));
+
+                    b.Property<int>("FlatCodeId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Flatimage")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.HasKey("FlatImagesId");
+
+                    b.HasIndex("FlatCodeId");
+
+                    b.ToTable("FlatImages");
                 });
 
             modelBuilder.Entity("test.Model.SocialHouse", b =>
@@ -186,6 +238,36 @@ namespace test.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("test.Model.ContactUs", b =>
+                {
+                    b.HasOne("test.Model.Flat", "Flat")
+                        .WithMany("Requests")
+                        .HasForeignKey("FlatCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("test.Model.User", "User")
+                        .WithMany("Requests")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Flat");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("test.Model.FlatImages", b =>
+                {
+                    b.HasOne("test.Model.Flat", "Flat")
+                        .WithMany("FlatImages")
+                        .HasForeignKey("FlatCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Flat");
+                });
+
             modelBuilder.Entity("test.Model.SocialHouseImages", b =>
                 {
                     b.HasOne("test.Model.SocialHouse", "SocialHouse")
@@ -197,9 +279,21 @@ namespace test.Migrations
                     b.Navigation("SocialHouse");
                 });
 
+            modelBuilder.Entity("test.Model.Flat", b =>
+                {
+                    b.Navigation("FlatImages");
+
+                    b.Navigation("Requests");
+                });
+
             modelBuilder.Entity("test.Model.SocialHouse", b =>
                 {
                     b.Navigation("socialHouseImages");
+                });
+
+            modelBuilder.Entity("test.Model.User", b =>
+                {
+                    b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618
         }

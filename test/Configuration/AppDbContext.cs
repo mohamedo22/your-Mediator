@@ -14,7 +14,9 @@ namespace test.Configuration
         public DbSet<SocialHouseImages> SocialHouseImages { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Flat> Flat { get; set; }
+        public DbSet<ContactUs> ContactUs { get; set; }
         public DbSet<FlatImages> FlatImages { get; set; }
+        public DbSet<FlatImagesDocs> FlatImagesDocs { get; set; }
 
     }
 }

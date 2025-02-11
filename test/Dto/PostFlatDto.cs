@@ -21,5 +21,6 @@ namespace test.Dto
         [Required, MaxLength(50)]
         public string FlatCity { get; set; }
         public List<IFormFile> FlatImages { get; set; }
+        public List<IFormFile> FlatDocs { get; set; }
     }
 }

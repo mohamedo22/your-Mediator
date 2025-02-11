@@ -28,7 +28,7 @@ namespace test.Controllers
                 bool status = _repo.EditProfile(dto);
                 if (status)
                 {
-                    return Accepted(new
+                    return Ok(new
                     {
                         status,
                         message = "Data Modified Successfully!"
@@ -50,7 +50,7 @@ namespace test.Controllers
                 bool status = _repo.SignUp(registerDto);
                 if (status)
                 {
-                    return Accepted(new
+                    return Ok(new
                     {
                         status,
                         message = "Account Created successfully!"
@@ -66,31 +66,32 @@ namespace test.Controllers
 
 
         [HttpPost("Login")]
-        public IActionResult Login(LoginDto logindto)
+        public IActionResult Login([FromBody] LoginDto loginDto)
         {
             if (!ModelState.IsValid)
-            { return BadRequest(ModelState); }
             {
-                bool status = _repo.Login(logindto);
-                if (status)
-                {
-
-                    return Accepted(new
-                    {
-                        status = status,
-                        message = "Login successful!",
-                    });
-                }
-                else
-                {
-                    return NotFound(new
-                    {
-                        status = status,
-                        message = "Invalid username or password."
-                    });
-                }
+                return BadRequest(ModelState);
             }
 
+            var user = _repo.Login(loginDto); 
+
+            if (user != null)
+            {
+                return Ok(new
+                {
+                    status = true,
+                    message = "Login successful!",
+                    user = user
+                });
+            }
+            else
+            {
+                return NotFound(new
+                {
+                    status = false,
+                    message = "Invalid username or password."
+                });
+            }
         }
         [HttpPatch]
         public IActionResult ForgetPassword(ForgetDto forgetDto)
@@ -101,7 +102,7 @@ namespace test.Controllers
                 bool status = _repo.ForgetPassword(forgetDto);
                 if (status)
                 {
-                    return Accepted(new
+                    return Ok(new
                     {
                         status = status,
                         message = "Password Changed Sucessfuly",

@@ -6,7 +6,7 @@ namespace test.Interface
     {
         bool ForgetPassword(ForgetDto forgetDto);
         bool SignUp(UserDto registerDto);
-        bool Login(LoginDto registerDto);
+        UsersDto Login(LoginDto registerDto);
         bool EditProfile(EditProfileDto editProfileDto);
     }
 }

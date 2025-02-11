@@ -6,14 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace test.Migrations
 {
     /// <inheritdoc />
-    public partial class firstMigration : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Register");
-
             migrationBuilder.CreateTable(
                 name: "Admins",
                 columns: table => new
@@ -26,6 +23,27 @@ namespace test.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Admins", x => x.AdminId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Flat",
+                columns: table => new
+                {
+                    FlatCodeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FlatPrice = table.Column<int>(type: "int", nullable: false),
+                    FlatBathrooms = table.Column<int>(type: "int", nullable: false),
+                    FlatBedrooms = table.Column<int>(type: "int", nullable: false),
+                    FloorNumber = table.Column<int>(type: "int", nullable: false),
+                    FlatGovernorate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FlatCity = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FlatDetails = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FlatAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Flat", x => x.FlatCodeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,6 +83,26 @@ namespace test.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FlatImages",
+                columns: table => new
+                {
+                    FlatImagesId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FlatCodeId = table.Column<int>(type: "int", nullable: false),
+                    Flatimage = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FlatImages", x => x.FlatImagesId);
+                    table.ForeignKey(
+                        name: "FK_FlatImages_Flat_FlatCodeId",
+                        column: x => x.FlatCodeId,
+                        principalTable: "Flat",
+                        principalColumn: "FlatCodeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SocialHouseImages",
                 columns: table => new
                 {
@@ -85,6 +123,11 @@ namespace test.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_FlatImages_FlatCodeId",
+                table: "FlatImages",
+                column: "FlatCodeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SocialHouseImages_SocialHouseId",
                 table: "SocialHouseImages",
                 column: "SocialHouseId");
@@ -97,32 +140,19 @@ namespace test.Migrations
                 name: "Admins");
 
             migrationBuilder.DropTable(
+                name: "FlatImages");
+
+            migrationBuilder.DropTable(
                 name: "SocialHouseImages");
 
             migrationBuilder.DropTable(
                 name: "User");
 
             migrationBuilder.DropTable(
-                name: "SocialHouses");
+                name: "Flat");
 
-            migrationBuilder.CreateTable(
-                name: "Register",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    National_Id = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Register", x => x.UserId);
-                });
+            migrationBuilder.DropTable(
+                name: "SocialHouses");
         }
     }
 }

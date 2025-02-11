@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Eventing.Reader;
 using test.Configuration;
 using test.Dto;
 using test.Interface;
@@ -27,7 +28,6 @@ namespace test.Repos
                 flat.FloorNumber = postFlatDto.FloorNumber;
                 flat.FlatDetails = postFlatDto.FlatDetails;
                 flat.FlatCity = postFlatDto.FlatCity;
-
                 if (postFlatDto.FlatImages != null && postFlatDto.FlatImages.Count > 0)
                 {
                     flat.FlatImages = new List<FlatImages>(); 
@@ -44,7 +44,22 @@ namespace test.Repos
                         }
                     }
                 }
-
+                if (postFlatDto.FlatDocs != null && postFlatDto.FlatDocs.Count > 0)
+                {
+                    flat.FlatDocs = new List<FlatImagesDocs>();
+                    foreach (var imageFile in postFlatDto.FlatDocs)
+                    {
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            imageFile.CopyTo(memoryStream);
+                            flat.FlatDocs.Add(new FlatImagesDocs
+                            {
+                                Flatimage = memoryStream.ToArray(),
+                                FlatCodeId = flat.FlatCodeId
+                            });
+                        }
+                    }
+                }
                 _context.Flat.Update(flat);
                 _context.SaveChanges();
                 return true;
@@ -53,6 +68,20 @@ namespace test.Repos
             {
                 return false;
             }
+        }
+        public bool EditFlat(string status, int id)
+        {
+            var flat = _context.Flat.Include(f => f.FlatImages).Include(f => f.FlatDocs).FirstOrDefault(x => x.FlatCodeId == id);
+            if (flat != null)
+            {
+                flat.Status = status;
+
+                _context.Flat.Update(flat);
+                _context.SaveChanges();
+                return true;
+            }
+            else { return false; }
+         
         }
         public List<GetFlatDto> GetFlat()
         {
@@ -66,12 +95,19 @@ namespace test.Repos
                     FlatBedrooms = x.FlatBedrooms,
                     FlatDetails = x.FlatDetails,
                     FlatGovernorate = x.FlatGovernorate,
+                    FlatCode = x.FlatCodeId,
                     FlatPrice = x.FlatPrice,
                     FloorNumber = x.FloorNumber,
+                    FlatStatus = x.Status,
                     FlatImages = x.FlatImages.Select(img => new FlatImagesGetDto
                     {
                         ImageBase64 = Convert.ToBase64String(img.Flatimage)
-                    }).ToList()
+                    }).ToList(),
+                    FlatDocs = x.FlatDocs.Select(img => new FlatImagesGetDto
+                    {
+                        ImageBase64 = Convert.ToBase64String(img.Flatimage)
+                    }).ToList(),
+
                 }).ToList();
             }
             else
@@ -79,8 +115,6 @@ namespace test.Repos
                 return null;
             }
         }
-
-
 
         public bool PostFlat(PostFlatDto postFlatDto)
         {
@@ -98,7 +132,8 @@ namespace test.Repos
                     FloorNumber = postFlatDto.FloorNumber,
                     FlatBedrooms = postFlatDto.FlatBedrooms,
                     FlatGovernorate = postFlatDto.FlatGovernorate,
-                    FlatImages = new List<FlatImages>()
+                    FlatImages = new List<FlatImages>(),
+                    FlatDocs = new List<FlatImagesDocs>(),
                 };
 
                 if (postFlatDto.FlatImages != null && postFlatDto.FlatImages.Count > 0)
@@ -109,6 +144,20 @@ namespace test.Repos
                         {
                             imageFile.CopyTo(memoryStream);
                             flat.FlatImages.Add(new FlatImages
+                            {
+                                Flatimage = memoryStream.ToArray()
+                            });
+                        }
+                    }
+                }
+                if (postFlatDto.FlatDocs != null && postFlatDto.FlatDocs.Count > 0)
+                {
+                    foreach (var imageFile in postFlatDto.FlatDocs)
+                    {
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            imageFile.CopyTo(memoryStream);
+                            flat.FlatDocs.Add(new FlatImagesDocs
                             {
                                 Flatimage = memoryStream.ToArray()
                             });

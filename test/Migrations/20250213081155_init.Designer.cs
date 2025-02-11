@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using test.Configuration;
 
@@ -11,9 +12,11 @@ using test.Configuration;
 namespace test.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250213081155_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,36 +44,6 @@ namespace test.Migrations
                     b.HasKey("AdminId");
 
                     b.ToTable("Admins");
-                });
-
-            modelBuilder.Entity("test.Model.ContactUs", b =>
-                {
-                    b.Property<int>("RequestId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestId"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FlatCodeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Time")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RequestId");
-
-                    b.HasIndex("FlatCodeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ContactUs");
                 });
 
             modelBuilder.Entity("test.Model.Flat", b =>
@@ -138,28 +111,6 @@ namespace test.Migrations
                     b.HasIndex("FlatCodeId");
 
                     b.ToTable("FlatImages");
-                });
-
-            modelBuilder.Entity("test.Model.FlatImagesDocs", b =>
-                {
-                    b.Property<int>("FlatImagesDocsId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FlatImagesDocsId"));
-
-                    b.Property<int>("FlatCodeId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("Flatimage")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.HasKey("FlatImagesDocsId");
-
-                    b.HasIndex("FlatCodeId");
-
-                    b.ToTable("FlatImagesDocs");
                 });
 
             modelBuilder.Entity("test.Model.SocialHouse", b =>
@@ -257,40 +208,10 @@ namespace test.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("test.Model.ContactUs", b =>
-                {
-                    b.HasOne("test.Model.Flat", "Flat")
-                        .WithMany("Requests")
-                        .HasForeignKey("FlatCodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("test.Model.User", "User")
-                        .WithMany("Requests")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Flat");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("test.Model.FlatImages", b =>
                 {
                     b.HasOne("test.Model.Flat", "Flat")
                         .WithMany("FlatImages")
-                        .HasForeignKey("FlatCodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Flat");
-                });
-
-            modelBuilder.Entity("test.Model.FlatImagesDocs", b =>
-                {
-                    b.HasOne("test.Model.Flat", "Flat")
-                        .WithMany("FlatDocs")
                         .HasForeignKey("FlatCodeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -311,21 +232,12 @@ namespace test.Migrations
 
             modelBuilder.Entity("test.Model.Flat", b =>
                 {
-                    b.Navigation("FlatDocs");
-
                     b.Navigation("FlatImages");
-
-                    b.Navigation("Requests");
                 });
 
             modelBuilder.Entity("test.Model.SocialHouse", b =>
                 {
                     b.Navigation("socialHouseImages");
-                });
-
-            modelBuilder.Entity("test.Model.User", b =>
-                {
-                    b.Navigation("Requests");
                 });
 #pragma warning restore 612, 618
         }

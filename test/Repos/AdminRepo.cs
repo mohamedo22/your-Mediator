@@ -9,7 +9,6 @@ namespace test.Repos
     public class AdminRepo : IAdmin
     {
         private readonly AppDbContext appDbContext;
-
         public AdminRepo(AppDbContext appDbContext)
         {
             this.appDbContext = appDbContext;
@@ -36,7 +35,6 @@ namespace test.Repos
             }
             return false;
         }
-
         public bool Login(AdminDTO adminDTO)
         {
             if (appDbContext.User != null)

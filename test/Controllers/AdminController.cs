@@ -22,16 +22,16 @@ namespace test.Controllers
             {
                 return Ok();
             }
-            return BadRequest();
+            return Ok();
         }
         [HttpPost("register")]
         public IActionResult SignUp(AdminDTO adminDTO)
         {
             if (adminRepo.SignUp(adminDTO))
             {
-                return Created();
+                return Ok();
             }
-            return BadRequest();
+            return Ok();
         }
         [HttpPost("login")]
         public IActionResult Login(AdminDTO adminDTO)
@@ -40,7 +40,7 @@ namespace test.Controllers
             {
                 return Ok();
             }
-            return NotFound();
+              return Ok();
         }
     }
 }

@@ -11,13 +11,15 @@ namespace test.Repos
     public class RegisterRepo : IRegisterRepo
     {
         private readonly AppDbContext _context;
+        private readonly ITokenService _tokenService;
 
-        public RegisterRepo(AppDbContext context)
+        public RegisterRepo(AppDbContext context, ITokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
-       public bool EditProfile(EditProfileDto editProfileDto)
+        public bool EditProfile(EditProfileDto editProfileDto)
         {
             var status = false;
             if (editProfileDto.Email != null)
@@ -63,25 +65,29 @@ namespace test.Repos
             }
             return false;
         }
-
-        public bool Login(LoginDto loginDto)
+        public UsersDto? Login(LoginDto loginDto)
         {
             if (_context.User != null)
             {
-                var status = false;
                 var user = _context.User.FirstOrDefault(x => x.Username == loginDto.Username && x.Password == loginDto.Password);
                 if (user != null)
                 {
-                    status = true;
-                    return status;
-                }
-                else
-                {
-                    status = false;
-                    return status;
+                    var token = _tokenService.GenerateToken(user.UserId.ToString(), user.Username);
+
+                    return new UsersDto
+                    {
+                        Id = user.UserId,
+                        Username = user.Username,
+                        National_Id = user.National_Id,
+                        BirthDate = user.BirthDate,
+                        Phone = user.Phone,
+                        Email = user.Email,
+                        Address = user.Address,
+                        Token = token
+                    };
                 }
             }
-            return false;
+            return null;
         }
         public bool SignUp(UserDto registerDto)
         {

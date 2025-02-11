@@ -2,6 +2,7 @@
 {
     public class GetFlatDto
     {
+        public int FlatCode { get; set; }
         public int FlatPrice { get; set; }
         public int FlatBathrooms { get; set; }
         public int FlatBedrooms { get; set; }
@@ -10,6 +11,8 @@
         public string FlatCity { get; set; }
         public string FlatDetails { get; set; }
         public string FlatAddress { get; set; }
+        public string FlatStatus { get; set; }
         public List<FlatImagesGetDto> FlatImages { get; set; }
+        public List<FlatImagesGetDto> FlatDocs { get; set; }
     }
 }

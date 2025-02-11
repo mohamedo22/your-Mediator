@@ -16,7 +16,7 @@ namespace test.Controllers
             this.socialHouseRepo = socialHouseRepo;
         }
         [HttpPost]
-        public IActionResult addSocialHouse(SocialHouseDTO socialHouseDTO)
+        public IActionResult addSocialHouse([FromForm] SocialHouseDTO socialHouseDTO)
         {
             if(socialHouseRepo.addSocialHouse(socialHouseDTO))
             {
@@ -33,7 +33,7 @@ namespace test.Controllers
             return BadRequest();
         }
         [HttpPut]
-        public IActionResult editeSocialHouse(SocialHouseDTO socialHouseDTO, int socialHouseID)
+        public IActionResult editeSocialHouse([FromForm] SocialHouseDTO socialHouseDTO, int socialHouseID)
         {
             if (socialHouseRepo.editeSocialHouse(socialHouseDTO, socialHouseID))
             {

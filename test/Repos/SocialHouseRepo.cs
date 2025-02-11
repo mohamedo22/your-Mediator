@@ -112,6 +112,7 @@ namespace test.Repos
         {
             var allSocialHouses = context.SocialHouses.Select(i=>new SocialHouseGetDTO
             {
+                SocialHouseId = i.SocialHouseId,
                 address = i.address,
                 category = i.category,
                 description = i.description,
